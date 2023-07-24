@@ -75,6 +75,71 @@ In the example above, notice that the two arguments that do depend on variables 
 gg_base +
   geom_col( aes(fill = visitors))
 ```
+## ggplot2 complete themes
+
+```{r}
+gg_base +
+  geom_point(
+    aes(size = visitors,
+        color = visitors),
+    alpha = 0.5
+  ) +
+  theme_minimal()
+
+```
+## Updating axis labels and titles
+
+Use labs()
+
+```{r}
+gg_base +
+  geom_line(linetype = "dotted") +
+  theme_bw() +
+  labs(
+    x = "Year",
+    y = "Annual Park Visitors",
+    title = " Channel Islands NP Visitation",
+    subtitle = "(1963 - 2016)"
+  )
+```
+
+```{r}
+library(scales)
+```
+```{r}
+gg_base +
+  geom_line(linetype = "dotted") +
+  theme_bw() +
+  labs(
+    x = "Year",
+    y = "Annual Park Visitors",
+    title = " Channel Islands NP Visitation",
+    subtitle = "(1963 - 2016)"
+  ) +
+  scale_y_continuous(labels = comma )
+```
+
+
+## Combining compatible geoms
+
+As long as the geoms are compatible, we can layer them on top of one another to further customize a graph.
+
+```{r}
+gg_base +
+  geom_line(color = "purple") +
+  geom_point(color = "orange",
+             aes(size = year),
+             alpha = 0.5
+             )
+```
+
+```{r}
+gg_base +
+  geom_col(fill = "orange",
+           color = "green") +
+  geom_line(color = "purple")
+```
+## Multi-series ggplot graphs
 
 
 
