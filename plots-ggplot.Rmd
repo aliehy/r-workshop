@@ -4,5 +4,81 @@ author: "Ali El Hage Youssef"
 date: "2023-07-23"
 output: html_document
 ---
-# Plots with ggplot2
-We are going to make plots in R and it's going to be amazing.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(here)
+```
+
+```{r}
+ca_np <- read_csv(here("data","ca_np.csv"))
+ci_np <- read_xlsx(here("data", "ci_np.xlsx"))
+```
+
+#Note: If you want to explicitly read in an .xlsx or .xls file, you can use read_xlsx() or read_xls() instead. read_excel() will #make its best guess about which type of Excel file you’re reading in, so is the generic form
+
+
+```{r}
+ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_line()
+```
+```{r}
+gg_base <- ggplot(data = ci_np, aes( x = year, y = visitors))
+gg_base +
+  geom_point()
+```
+```{r}
+gg_base +
+  geom_col()
+```
+
+```{r}
+gg_base +
+  geom_area()
+```
+
+```{r}
+gg_base +
+  geom_line(
+    color = "purple",
+    linetype = "dashed"
+    
+  )
+```
+```{r}
+gg_base +
+  geom_point( 
+    color = "purple",
+    pch = 17,
+    size = 4,
+    alpha = 0.5
+    )
+```
+
+When we want to customize a graph element based on a variable’s characteristic or value, add the argument within aes() in the appropriate geom_*() layer
+
+
+```{r}
+gg_base +
+  geom_point( 
+  aes(
+  size = visitors,
+  color = visitors
+),
+alpha = 0.5
+    )
+```
+In the example above, notice that the two arguments that do depend on variables are within aes(), but since alpha = 0.5 doesn’t depend on a variable then it is outside the aes() but still within the geom_point() layer.
+
+```{r}
+gg_base +
+  geom_col( aes(fill = visitors))
+```
+
+
+
+
+
+
+
