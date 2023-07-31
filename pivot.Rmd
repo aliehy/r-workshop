@@ -83,5 +83,25 @@ ggplot(siteyear_summary, aes(x = year, y = median_size_mm)) +
 ```{r}
 ggsave(here("figures", "lobsters-col.png"))
 ```
+```{r}
+lobsters %>%
+  mutate(size_m = size_mm/1000)
+```
 
+```{r}
+lobsters_detailed <- lobsters %>%
+  mutate(size_m = size_mm/1000,
+         millenea = 2000,
+         observer = "Allison the Bitch")
+```
 
+```{r}
+lobsters_detailed
+```
+
+```{r}
+lobsters_detailed %>%
+  select(date, site, size_m)
+```
+  
+  
