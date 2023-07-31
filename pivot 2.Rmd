@@ -1,0 +1,87 @@
+---
+title: "pivot_lobsters.Rmd"
+author: "Ali El Hage Youssef"
+date: "2023-07-31"
+output: html_document
+---
+
+```{r}
+### attach libraries
+library(tidyverse)
+library(readxl)
+library(here)
+library(skimr)
+library(kableExtra)
+```
+
+```{r}
+## read in data and skip the first 4 lines (metadata)
+lobsters <- read_xlsx(here("data/lobsters2.xlsx"), skip=4)
+
+```
+
+```{r}
+skimr::skim(lobsters)
+```
+
+This skimr:: notation is a reminder to me that skim is from the skimr package. It is a nice convention: it’s a reminder to others (especially you!).
+
+```{r}
+lobsters %>%
+  group_by(site, year) %>%
+  summarise(count_by_siteyear = n())
+```
+```{r}
+lobsters %>%
+  group_by(site, year) %>%
+  summarise(count_by_siteyear = n(),
+            mean_size_mm = mean(size_mm))
+```
+```{r}
+siteyear_summary <- lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear = n(),
+            mean_size_mm = mean(size_mm, na.rm = TRUE),
+            sd_size_mm = sd(size_mm, na.rm = TRUE))
+```
+```{r}
+siteyear_summary
+```
+
+```{r}
+siteyear_summary %>%
+  kable()
+```
+
+There are `r nrow(lobsters)` total lobsters included in this report.
+
+```{r}
+siteyear_summary <- lobsters %>%
+  group_by(site, year) %>%
+  summarize(count_by_siteyear =  n(), 
+            mean_size_mm = mean(size_mm, na.rm = TRUE), 
+            sd_size_mm = sd(size_mm, na.rm = TRUE), 
+            median_size_mm = median(size_mm, na.rm = TRUE))
+```
+
+ 
+```{r}
+ggplot(data = siteyear_summary, aes(x = year, y = median_size_mm, color = site)) +
+  geom_line() 
+```
+
+```{r}
+ggsave(here("figures", "lobsters-line.png"))
+```
+
+```{r}
+ggplot(siteyear_summary, aes(x = year, y = median_size_mm)) +
+  geom_col() +
+  facet_wrap(~site)
+```
+
+```{r}
+ggsave(here("figures", "lobsters-col.png"))
+```
+
+
