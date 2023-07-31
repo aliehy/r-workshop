@@ -16,7 +16,7 @@ library(kableExtra)
 
 ```{r}
 ## read in data and skip the first 4 lines (metadata)
-lobsters <- read_xlsx(here("data/lobsters.xlsx"), skip=4)
+lobsters <- read_xlsx(here("data/lobsters2.xlsx"), skip=4)
 
 ```
 
